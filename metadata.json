@@ -1,0 +1,6 @@
+{
+  "name": "NEXORA GROUP — Sistema de Gestão Empresarial e Financeira",
+  "description": "Sistema interno completo de gestão empresarial, financeira, comercial, estoque e controladoria da NEXORA GROUP.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
