@@ -7,11 +7,14 @@ import {
   Lock,
   Mail,
   CheckCircle,
+  Camera,
+  Upload,
 } from 'lucide-react';
 import { api } from '../../services/api.ts';
 import { User, AppModule, UserRole } from '../../types/index.ts';
 import { formatDateTime } from '../../utils/formatters.ts';
 import { Modal } from '../../components/Modal.tsx';
+import { ChangeAvatarModal } from '../../components/ChangeAvatarModal.tsx';
 import { useToast } from '../../context/ToastContext.tsx';
 import { useAuth } from '../../context/AuthContext.tsx';
 
@@ -40,12 +43,22 @@ export const UsersList: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
+  // Avatar Modal
+  const [avatarModalOpen, setAvatarModalOpen] = useState(false);
+  const [avatarTargetUser, setAvatarTargetUser] = useState<User | null>(null);
+
+  const handleOpenAvatarModal = (target: User) => {
+    setAvatarTargetUser(target);
+    setAvatarModalOpen(true);
+  };
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     role: 'colaborador' as UserRole,
     position: '',
+    avatar: '',
     permissions: ['dashboard'] as AppModule[],
   });
 
@@ -73,6 +86,7 @@ export const UsersList: React.FC = () => {
       password: '',
       role: 'colaborador',
       position: 'Colaborador',
+      avatar: '',
       permissions: ['dashboard', 'vendas', 'produtos'],
     });
     setShowModal(true);
@@ -86,6 +100,7 @@ export const UsersList: React.FC = () => {
       password: '',
       role: target.role,
       position: target.position,
+      avatar: target.avatar || '',
       permissions: target.permissions || [],
     });
     setShowModal(true);
@@ -160,12 +175,21 @@ export const UsersList: React.FC = () => {
               className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between"
             >
               <div className="flex items-center gap-3">
-                <img
-                  src={partner.avatar || '/src/assets/images/avatar_ruan_1791062648918.jpg'}
-                  alt={partner.name}
-                  className="w-12 h-12 rounded-full object-cover ring-2 ring-sky-500/40"
-                  referrerPolicy="no-referrer"
-                />
+                <div
+                  className="relative group cursor-pointer shrink-0"
+                  onClick={() => handleOpenAvatarModal(partner)}
+                  title="Clique para trocar a foto de perfil deste sócio"
+                >
+                  <img
+                    src={partner.avatar || '/src/assets/images/avatar_ruan_1791062648918.jpg'}
+                    alt={partner.name}
+                    className="w-12 h-12 rounded-full object-cover ring-2 ring-sky-500/40 group-hover:brightness-90 transition-all"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Camera className="w-4 h-4 text-white" />
+                  </div>
+                </div>
                 <div>
                   <div className="flex items-center gap-1.5">
                     <h3 className="font-black text-sm text-slate-900 dark:text-white">
@@ -182,13 +206,24 @@ export const UsersList: React.FC = () => {
                 </div>
               </div>
 
-              <button
-                onClick={() => handleOpenEdit(partner)}
-                className="p-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-300 transition-colors"
-                title="Editar Permissões"
-              >
-                <Edit className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => handleOpenAvatarModal(partner)}
+                  className="p-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-600 dark:bg-sky-950/40 dark:text-sky-400 transition-colors"
+                  title="Trocar Foto de Perfil"
+                >
+                  <Camera className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleOpenEdit(partner)}
+                  className="p-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-300 transition-colors"
+                  title="Editar Permissões"
+                >
+                  <Edit className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           ))}
       </div>
@@ -216,12 +251,21 @@ export const UsersList: React.FC = () => {
                 <tr key={u.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2.5">
-                      <img
-                        src={u.avatar || '/src/assets/images/avatar_ruan_1791062648918.jpg'}
-                        alt={u.name}
-                        className="w-7 h-7 rounded-full object-cover ring-1 ring-slate-300"
-                        referrerPolicy="no-referrer"
-                      />
+                      <div
+                        className="relative group cursor-pointer shrink-0"
+                        onClick={() => handleOpenAvatarModal(u)}
+                        title="Clique para trocar foto de perfil"
+                      >
+                        <img
+                          src={u.avatar || '/src/assets/images/avatar_ruan_1791062648918.jpg'}
+                          alt={u.name}
+                          className="w-7 h-7 rounded-full object-cover ring-1 ring-slate-300 group-hover:brightness-75 transition-all"
+                          referrerPolicy="no-referrer"
+                        />
+                        <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Camera className="w-3 h-3 text-white" />
+                        </div>
+                      </div>
                       <span className="font-bold text-slate-900 dark:text-white">{u.name}</span>
                     </div>
                   </td>
@@ -243,13 +287,24 @@ export const UsersList: React.FC = () => {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <button
-                      onClick={() => handleOpenEdit(u)}
-                      className="p-1.5 rounded-md bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-600 dark:bg-slate-800 dark:text-slate-300 transition-colors"
-                      title="Editar Permissões"
-                    >
-                      <Edit className="w-3.5 h-3.5" />
-                    </button>
+                    <div className="flex items-center justify-end gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenAvatarModal(u)}
+                        className="p-1.5 rounded-md bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-600 dark:bg-slate-800 dark:text-slate-300 transition-colors"
+                        title="Trocar Foto"
+                      >
+                        <Camera className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEdit(u)}
+                        className="p-1.5 rounded-md bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-600 dark:bg-slate-800 dark:text-slate-300 transition-colors"
+                        title="Editar Permissões"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -267,6 +322,35 @@ export const UsersList: React.FC = () => {
         maxWidth="2xl"
       >
         <form onSubmit={handleSave} className="space-y-4 text-xs">
+          {/* Avatar Photo Field in Modal */}
+          <div className="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <img
+                src={formData.avatar || editingUser?.avatar || '/src/assets/images/avatar_ruan_1791062648918.jpg'}
+                alt={formData.name || 'Usuário'}
+                className="w-11 h-11 rounded-full object-cover ring-2 ring-sky-500/40"
+                referrerPolicy="no-referrer"
+              />
+              <div>
+                <p className="font-bold text-slate-800 dark:text-slate-200">Foto de Perfil</p>
+                <p className="text-[11px] text-slate-400">
+                  {formData.avatar ? 'Foto personalizada carregada' : 'Foto atual do usuário'}
+                </p>
+              </div>
+            </div>
+
+            {editingUser && (
+              <button
+                type="button"
+                onClick={() => handleOpenAvatarModal(editingUser)}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-white rounded-lg text-xs font-bold shadow-xs cursor-pointer transition-colors"
+              >
+                <Camera className="w-3.5 h-3.5" />
+                <span>Trocar Foto</span>
+              </button>
+            )}
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
@@ -383,6 +467,19 @@ export const UsersList: React.FC = () => {
           </div>
         </form>
       </Modal>
+
+      {/* Change Avatar Modal for Partners & Users */}
+      <ChangeAvatarModal
+        isOpen={avatarModalOpen}
+        targetUser={avatarTargetUser || undefined}
+        onClose={() => setAvatarModalOpen(false)}
+        onAvatarUpdated={(newAvatar) => {
+          if (editingUser && avatarTargetUser?.id === editingUser.id) {
+            setFormData((prev) => ({ ...prev, avatar: newAvatar }));
+          }
+          loadUsers();
+        }}
+      />
     </div>
   );
 };

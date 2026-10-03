@@ -162,6 +162,29 @@ async function startServer() {
     return res.json({ user: safeUser });
   });
 
+  // Update current user profile (including avatar photo)
+  app.put('/api/auth/profile', authMiddleware, (req: Request, res: Response) => {
+    const sessionUser = (req as any).user as SessionUser;
+    const user = db.getData().users.find((u) => u.id === sessionUser.id);
+    if (!user) return res.status(404).json({ error: 'Usuário não encontrado.' });
+
+    const { name, position, avatar } = req.body;
+    if (name) user.name = name;
+    if (position) user.position = position;
+    if (avatar !== undefined) user.avatar = avatar;
+
+    db.addAuditLog(
+      { id: user.id, name: user.name },
+      'PERFIL_FOTO_ATUALIZADA',
+      'usuarios',
+      `${user.name} atualizou sua foto de perfil / dados cadastrais.`
+    );
+    db.persist();
+
+    const { password_hash, ...safeUser } = user;
+    return res.json({ user: safeUser });
+  });
+
   // Change password
   app.post('/api/auth/change-password', authMiddleware, (req: Request, res: Response) => {
     const sessionUser = (req as any).user as SessionUser;
@@ -1075,12 +1098,13 @@ async function startServer() {
     const target = db.getData().users.find((u) => u.id === req.params.id);
     if (!target) return res.status(404).json({ error: 'Usuário não encontrado.' });
 
-    const { name, role, position, status, permissions, password } = req.body;
+    const { name, role, position, status, permissions, password, avatar } = req.body;
     if (name) target.name = name;
     if (role) target.role = role;
     if (position) target.position = position;
     if (status) target.status = status;
     if (permissions) target.permissions = permissions;
+    if (avatar !== undefined) target.avatar = avatar;
     if (password && password.length >= 6) {
       target.password_hash = hashPassword(password);
     }
@@ -1183,7 +1207,9 @@ async function startServer() {
     return res.json({ customers, products, sales, orders });
   });
 
-  // --- FRONTEND INTEGRATION (DEV VITE MIDDLEWARES / PROD STATIC) ---
+  // --- STATIC ASSETS & FRONTEND INTEGRATION ---
+  app.use(express.static(path.resolve(__dirname, 'public')));
+
   const isProd = process.env.NODE_ENV === 'production';
   const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 

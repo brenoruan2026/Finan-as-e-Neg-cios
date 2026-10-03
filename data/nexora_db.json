@@ -24,7 +24,7 @@
         "configuracoes"
       ],
       "createdAt": "2025-01-01T08:00:00.000Z",
-      "lastLoginAt": "2026-10-03T21:32:46.131Z"
+      "lastLoginAt": "2026-10-03T21:46:59.943Z"
     },
     {
       "id": "usr_gabriel",
@@ -50,7 +50,7 @@
         "configuracoes"
       ],
       "createdAt": "2025-01-01T08:00:00.000Z",
-      "lastLoginAt": "2026-10-03T21:32:44.237Z"
+      "lastLoginAt": "2026-10-03T21:35:46.016Z"
     },
     {
       "id": "usr_cliver",
@@ -76,7 +76,7 @@
         "configuracoes"
       ],
       "createdAt": "2025-01-01T08:00:00.000Z",
-      "lastLoginAt": "2026-10-03T21:32:44.237Z"
+      "lastLoginAt": "2026-10-03T21:35:54.905Z"
     }
   ],
   "bank_accounts": [
@@ -1076,6 +1076,87 @@
   ],
   "audit_logs": [
     {
+      "id": "aud_1791064019956_moqcl",
+      "user_id": "usr_ruan",
+      "user_name": "RUAN",
+      "action": "PERFIL_FOTO_ATUALIZADA",
+      "module": "usuarios",
+      "description": "RUAN atualizou sua foto de perfil / dados cadastrais.",
+      "timestamp": "2026-10-03T21:46:59.956Z"
+    },
+    {
+      "id": "aud_1791064019943_19r9y",
+      "user_id": "usr_ruan",
+      "user_name": "RUAN",
+      "action": "AUTH_LOGIN",
+      "module": "usuarios",
+      "description": "RUAN realizou login no sistema.",
+      "timestamp": "2026-10-03T21:46:59.943Z"
+    },
+    {
+      "id": "aud_1791064017164_hb6ro",
+      "user_id": "usr_ruan",
+      "user_name": "RUAN",
+      "action": "AUTH_LOGIN",
+      "module": "usuarios",
+      "description": "RUAN realizou login no sistema.",
+      "timestamp": "2026-10-03T21:46:57.164Z"
+    },
+    {
+      "id": "aud_1791063375225_pfjwx",
+      "user_id": "usr_cliver",
+      "user_name": "CLIVER",
+      "action": "AUTH_LOGOUT",
+      "module": "usuarios",
+      "description": "CLIVER encerrou a sessão.",
+      "timestamp": "2026-10-03T21:36:15.225Z"
+    },
+    {
+      "id": "aud_1791063354906_wvxzl",
+      "user_id": "usr_cliver",
+      "user_name": "CLIVER",
+      "action": "AUTH_SWITCH",
+      "module": "usuarios",
+      "description": "Sessão alternada para CLIVER (Sócio Comercial & CFO).",
+      "timestamp": "2026-10-03T21:35:54.906Z"
+    },
+    {
+      "id": "aud_1791063349615_h10l4",
+      "user_id": "usr_gabriel",
+      "user_name": "GABRIEL",
+      "action": "AUTH_LOGOUT",
+      "module": "usuarios",
+      "description": "GABRIEL encerrou a sessão.",
+      "timestamp": "2026-10-03T21:35:49.615Z"
+    },
+    {
+      "id": "aud_1791063346016_ffhei",
+      "user_id": "usr_gabriel",
+      "user_name": "GABRIEL",
+      "action": "AUTH_SWITCH",
+      "module": "usuarios",
+      "description": "Sessão alternada para GABRIEL (Sócio de Operações & CTO).",
+      "timestamp": "2026-10-03T21:35:46.016Z"
+    },
+    {
+      "id": "aud_1791063344366_b870x",
+      "user_id": "usr_ruan",
+      "user_name": "RUAN",
+      "action": "AUTH_LOGOUT",
+      "module": "usuarios",
+      "description": "RUAN encerrou a sessão.",
+      "timestamp": "2026-10-03T21:35:44.366Z"
+    },
+    {
+      "id": "aud_1791063305647_xhafu",
+      "user_id": "usr_ruan",
+      "user_name": "RUAN",
+      "action": "AUTH_SWITCH",
+      "module": "usuarios",
+      "description": "Sessão alternada para RUAN (Sócio Administrador & CEO).",
+      "timestamp": "2026-10-03T21:35:05.647Z"
+    },
+    {
       "id": "aud_1791063177155_t4d4b",
       "user_id": "usr_ruan",
       "user_name": "RUAN",
@@ -1188,7 +1269,7 @@
     "state": "SP",
     "cep": "04538-132",
     "currency": "BRL",
-    "logo_url": "/src/assets/images/logo_nexora_emblem_1791062638084.jpg",
+    "logo_url": "/nexora-logo.svg",
     "default_payment_methods": [
       "pix",
       "transferencia",

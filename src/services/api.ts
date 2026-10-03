@@ -88,6 +88,12 @@ export const api = {
 
   getMe: () => request<{ user: User }>('/api/auth/me'),
 
+  updateProfile: (data: { name?: string; position?: string; avatar?: string }) =>
+    request<{ user: User }>('/api/auth/profile', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+
   changePassword: (currentPassword: string, newPassword: string) =>
     request<{ success: boolean; message: string }>('/api/auth/change-password', {
       method: 'POST',

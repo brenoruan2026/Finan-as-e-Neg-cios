@@ -17,11 +17,14 @@ import {
   CheckCircle2,
   X,
   User as UserIcon,
+  Camera,
+  Settings,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.tsx';
 import { api } from '../services/api.ts';
-import { NotificationItem, Customer, Product, Sale, Order } from '../types/index.ts';
+import { NotificationItem, Customer, Product, Sale, Order, User } from '../types/index.ts';
 import { formatCurrency, formatDateTime } from '../utils/formatters.ts';
+import { ChangeAvatarModal } from './ChangeAvatarModal.tsx';
 
 interface TopHeaderProps {
   onToggleSidebar: () => void;
@@ -52,30 +55,43 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onToggleSidebar, onNavigat
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
 
+  // Avatar change modal
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
+  const [dbUsers, setDbUsers] = useState<User[]>([]);
+
   // Partner switch dropdown
   const [showSwitchDropdown, setShowSwitchDropdown] = useState(false);
   const switchRef = useRef<HTMLDivElement>(null);
 
-  const partners = [
-    {
-      id: 'usr_ruan',
-      name: 'RUAN',
-      role: 'CEO & Adm.',
-      avatar: '/src/assets/images/avatar_ruan_1791062648918.jpg',
-    },
-    {
-      id: 'usr_gabriel',
-      name: 'GABRIEL',
-      role: 'CTO & Oper.',
-      avatar: '/src/assets/images/avatar_gabriel_1791062659434.jpg',
-    },
-    {
-      id: 'usr_cliver',
-      name: 'CLIVER',
-      role: 'CFO & Com.',
-      avatar: '/src/assets/images/avatar_cliver_1791062672397.jpg',
-    },
-  ];
+  // Load latest users so partner avatars stay synced in real-time
+  useEffect(() => {
+    api.getUsers().then(setDbUsers).catch(() => {});
+  }, [user?.avatar]);
+
+  const partnerIds = ['usr_ruan', 'usr_gabriel', 'usr_cliver'];
+  const partners = partnerIds.map((pid) => {
+    const found = dbUsers.find((u) => u.id === pid);
+    if (found) {
+      return {
+        id: found.id,
+        name: found.name,
+        role: found.position?.split('&')[0] || 'Sócio',
+        avatar: found.id === user?.id && user?.avatar ? user.avatar : found.avatar,
+      };
+    }
+    const defaults: Record<string, { name: string; role: string; avatar: string }> = {
+      usr_ruan: { name: 'RUAN', role: 'CEO & Adm.', avatar: '/src/assets/images/avatar_ruan_1791062648918.jpg' },
+      usr_gabriel: { name: 'GABRIEL', role: 'CTO & Oper.', avatar: '/src/assets/images/avatar_gabriel_1791062659434.jpg' },
+      usr_cliver: { name: 'CLIVER', role: 'CFO & Com.', avatar: '/src/assets/images/avatar_cliver_1791062672397.jpg' },
+    };
+    const def = defaults[pid] || { name: 'SÓCIO', role: 'Sócio', avatar: '' };
+    return {
+      id: pid,
+      name: def.name,
+      role: def.role,
+      avatar: pid === user?.id && user?.avatar ? user.avatar : def.avatar,
+    };
+  });
 
   // Load notifications
   const loadNotifications = async () => {
@@ -490,6 +506,17 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onToggleSidebar, onNavigat
 
               <button
                 onClick={() => {
+                  setShowAvatarModal(true);
+                  setShowProfileMenu(false);
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 hover:bg-sky-50 dark:hover:bg-sky-950/40 text-sky-600 dark:text-sky-400 font-bold"
+              >
+                <Camera className="w-3.5 h-3.5" />
+                <span>Trocar Minha Foto de Perfil</span>
+              </button>
+
+              <button
+                onClick={() => {
                   onNavigate('/perfil');
                   setShowProfileMenu(false);
                 }}
@@ -506,7 +533,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onToggleSidebar, onNavigat
                 }}
                 className="w-full flex items-center gap-2 px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
               >
-                <Package className="w-3.5 h-3.5 text-slate-400" />
+                <Settings className="w-3.5 h-3.5 text-slate-400" />
                 <span>Configurações da Empresa</span>
               </button>
 
@@ -526,6 +553,12 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onToggleSidebar, onNavigat
           )}
         </div>
       </div>
+
+      {/* Quick Change Avatar Modal */}
+      <ChangeAvatarModal
+        isOpen={showAvatarModal}
+        onClose={() => setShowAvatarModal(false)}
+      />
     </header>
   );
 };

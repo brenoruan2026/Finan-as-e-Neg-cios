@@ -13,6 +13,7 @@ import { api } from '../../services/api.ts';
 import { CompanySettings } from '../../types/index.ts';
 import { useToast } from '../../context/ToastContext.tsx';
 import { formatDateTime } from '../../utils/formatters.ts';
+import { NexoraLogo } from '../../components/NexoraLogo.tsx';
 
 export const SettingsPage: React.FC = () => {
   const { success, error } = useToast();
@@ -101,9 +102,31 @@ export const SettingsPage: React.FC = () => {
       <form onSubmit={handleSave} className="space-y-6 text-xs">
         {/* Company Identity */}
         <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs space-y-4">
-          <div className="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
-            <Building2 className="w-4 h-4 text-sky-500" />
-            <span>Dados Cadastrais da Empresa</span>
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+            <div className="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
+              <Building2 className="w-4 h-4 text-sky-500" />
+              <span>Dados Cadastrais da Empresa</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                <CheckCircle className="w-3.5 h-3.5" />
+                <span>Logo Oficial Nexora Ativo</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Logo Showcase */}
+          <div className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="p-2 bg-white dark:bg-slate-900 rounded-xl shadow-xs border border-slate-200 dark:border-slate-700">
+                <NexoraLogo size="lg" variant="badge" />
+              </div>
+              <div>
+                <h4 className="font-extrabold text-sm text-slate-900 dark:text-white">NEXORA GROUP</h4>
+                <p className="text-[11px] text-sky-600 dark:text-sky-400 font-semibold">Identidade Visual & Marca Registrada</p>
+                <p className="text-[10px] text-slate-400 mt-0.5">Vetor SVG oficial com acabamento metálico em alta resolução</p>
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

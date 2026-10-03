@@ -14,6 +14,7 @@ import { api } from '../../services/api.ts';
 import { formatCurrency, formatDate, formatDateTime } from '../../utils/formatters.ts';
 import { useAuth } from '../../context/AuthContext.tsx';
 import { useToast } from '../../context/ToastContext.tsx';
+import { NexoraLogo } from '../../components/NexoraLogo.tsx';
 
 export const ReportsHub: React.FC = () => {
   const { user } = useAuth();
@@ -193,15 +194,9 @@ export const ReportsHub: React.FC = () => {
       <div className="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs space-y-6">
         {/* Company Header for Print / Display */}
         <div className="border-b border-slate-200 dark:border-slate-800 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <img
-              src="/src/assets/images/logo_nexora_emblem_1791062638084.jpg"
-              alt="Nexora Group"
-              className="w-10 h-10 rounded-lg object-cover ring-1 ring-slate-200"
-              referrerPolicy="no-referrer"
-            />
-            <div>
-              <h2 className="text-base font-black text-slate-900 dark:text-white">NEXORA GROUP</h2>
+          <div className="flex items-center gap-4">
+            <NexoraLogo size="md" variant="full" />
+            <div className="border-l border-slate-200 dark:border-slate-800 pl-4 hidden sm:block">
               <p className="text-[11px] text-slate-500">
                 CNPJ: 58.912.340/0001-44 | São Paulo - SP
               </p>

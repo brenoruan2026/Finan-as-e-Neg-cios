@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Lock, Mail, ArrowRight, ShieldCheck, UserCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.tsx';
+import { NexoraLogo } from '../components/NexoraLogo.tsx';
 
 interface LoginProps {
   onLoginSuccess?: () => void;
@@ -43,13 +44,8 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4">
         {/* Brand header */}
         <div className="text-center mb-8">
-          <div className="inline-flex p-2 bg-[#0B192C] border border-[#1E3E62]/60 rounded-2xl shadow-xl mb-4">
-            <img
-              src="/src/assets/images/logo_nexora_emblem_1791062638084.jpg"
-              alt="NEXORA GROUP"
-              className="w-14 h-14 rounded-xl object-cover"
-              referrerPolicy="no-referrer"
-            />
+          <div className="inline-flex p-3 bg-white rounded-2xl shadow-2xl border border-sky-500/30 mb-4 ring-4 ring-sky-500/10">
+            <NexoraLogo size="lg" variant="mark" />
           </div>
           <h1 className="text-2xl font-black tracking-tight text-white sm:text-3xl">
             NEXORA GROUP

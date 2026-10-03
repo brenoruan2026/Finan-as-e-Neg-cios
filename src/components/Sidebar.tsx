@@ -22,9 +22,12 @@ import {
   Settings,
   LogOut,
   X,
+  User,
+  Camera,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.tsx';
 import { AppModule } from '../types/index.ts';
+import { NexoraLogo } from './NexoraLogo.tsx';
 
 interface SidebarProps {
   currentPath: string;
@@ -96,6 +99,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate, isOpe
     {
       title: 'ADMINISTRAÇÃO',
       items: [
+        { name: 'Meu Perfil & Foto', path: '/perfil', icon: User, module: 'dashboard' },
         { name: 'Usuários & Sócios', path: '/usuarios', icon: ShieldCheck, module: 'usuarios' },
         { name: 'Auditoria & Atividades', path: '/atividades', icon: History, module: 'atividades' },
         { name: 'Configurações', path: '/configuracoes', icon: Settings, module: 'configuracoes' },
@@ -119,21 +123,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate, isOpe
         }`}
       >
         {/* Brand header */}
-        <div className="h-16 px-5 border-b border-[#1E3E62]/40 flex items-center justify-between shrink-0 bg-[#071322]">
-          <div className="flex items-center gap-3">
-            <img
-              src="/src/assets/images/logo_nexora_emblem_1791062638084.jpg"
-              alt="Nexora Group"
-              className="w-8 h-8 rounded-md object-cover shadow-xs border border-white/20"
-              referrerPolicy="no-referrer"
-            />
-            <div className="flex flex-col">
-              <span className="text-sm font-black tracking-wider text-white">NEXORA GROUP</span>
-              <span className="text-[10px] uppercase font-semibold text-sky-400/90 tracking-widest">
-                Gestão Empresarial
-              </span>
-            </div>
-          </div>
+        <div className="h-16 px-4 border-b border-[#1E3E62]/40 flex items-center justify-between shrink-0 bg-[#071322]">
+          <NexoraLogo
+            size="sm"
+            variant="full"
+            className="cursor-pointer hover:opacity-95 transition-opacity"
+            onClick={() => onNavigate('/dashboard')}
+          />
           <button
             onClick={onClose}
             className="lg:hidden text-slate-400 hover:text-white p-1 rounded-md"
@@ -142,20 +138,33 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate, isOpe
           </button>
         </div>
 
-        {/* User Card Mini */}
-        <div className="px-4 py-3 bg-[#0c1e36]/70 border-b border-[#1E3E62]/30 flex items-center gap-3">
-          <img
-            src={user?.avatar || '/src/assets/images/avatar_ruan_1791062648918.jpg'}
-            alt={user?.name}
-            className="w-9 h-9 rounded-full object-cover ring-2 ring-sky-500/40 shrink-0"
-            referrerPolicy="no-referrer"
-          />
+        {/* User Card Mini with quick profile and photo change */}
+        <div
+          onClick={() => onNavigate('/perfil')}
+          className="px-4 py-3 bg-[#0c1e36]/70 border-b border-[#1E3E62]/30 flex items-center gap-3 cursor-pointer group hover:bg-[#0c1e36] transition-colors"
+          title="Clique para gerenciar seu perfil e trocar foto"
+        >
+          <div className="relative shrink-0">
+            <img
+              src={user?.avatar || '/src/assets/images/avatar_ruan_1791062648918.jpg'}
+              alt={user?.name}
+              className="w-9 h-9 rounded-full object-cover ring-2 ring-sky-500/40 group-hover:ring-sky-400 shrink-0 transition-all"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <Camera className="w-4 h-4 text-white drop-shadow-sm" />
+            </div>
+          </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5">
-              <p className="text-xs font-bold text-white truncate">{user?.name}</p>
+              <p className="text-xs font-bold text-white group-hover:text-sky-300 truncate transition-colors">
+                {user?.name}
+              </p>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" title="Online" />
             </div>
-            <p className="text-[11px] text-slate-400 truncate">{user?.position}</p>
+            <p className="text-[11px] text-slate-400 truncate flex items-center gap-1">
+              <span>{user?.position}</span>
+            </p>
           </div>
         </div>
 

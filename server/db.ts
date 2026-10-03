@@ -1000,7 +1000,7 @@ function getInitialSeed(): DatabaseSchema {
       state: 'SP',
       cep: '04538-132',
       currency: 'BRL',
-      logo_url: '/src/assets/images/logo_nexora_emblem_1791062638084.jpg',
+      logo_url: '/nexora-logo.svg',
       default_payment_methods: [
         'pix',
         'transferencia',

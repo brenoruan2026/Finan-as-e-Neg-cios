@@ -10,6 +10,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>;
   quickSwitch: (userId: string) => Promise<boolean>;
   logout: () => Promise<void>;
+  updateProfile: (data: { name?: string; position?: string; avatar?: string }) => Promise<boolean>;
   hasPermission: (moduleKey: AppModule) => boolean;
   refreshUser: () => Promise<void>;
   isDarkMode: boolean;
@@ -129,6 +130,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateProfile = async (data: { name?: string; position?: string; avatar?: string }): Promise<boolean> => {
+    try {
+      const res = await api.updateProfile(data);
+      setUser(res.user);
+      success('Foto de perfil e dados atualizados com sucesso!', 'Perfil Atualizado');
+      return true;
+    } catch (err: any) {
+      error(err.message || 'Erro ao atualizar foto de perfil.');
+      return false;
+    }
+  };
+
   const hasPermission = (moduleKey: AppModule): boolean => {
     if (!user) return false;
     if (user.role === 'admin') return true;
@@ -144,6 +157,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         login,
         quickSwitch,
         logout,
+        updateProfile,
         hasPermission,
         refreshUser,
         isDarkMode,

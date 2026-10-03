@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="140 180 230 140" width="100%" height="100%">
+  <defs>
+    <!-- Metallic gradient 1 (Stem & Diagonal to Loop) -->
+    <linearGradient id="nexoraGradMain" x1="15%" y1="20%" x2="85%" y2="85%">
+      <stop offset="0%" stop-color="#070c18" />
+      <stop offset="25%" stop-color="#0c2356" />
+      <stop offset="50%" stop-color="#1d4ed8" />
+      <stop offset="75%" stop-color="#2563eb" />
+      <stop offset="90%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+
+    <!-- Metallic gradient 2 (Upper G Arc) -->
+    <linearGradient id="nexoraGradArc" x1="20%" y1="80%" x2="90%" y2="20%">
+      <stop offset="0%" stop-color="#0a1022" />
+      <stop offset="35%" stop-color="#1e3a8a" />
+      <stop offset="65%" stop-color="#2563eb" />
+      <stop offset="85%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#60a5fa" />
+    </linearGradient>
+
+    <!-- Glossy metallic shine highlight -->
+    <linearGradient id="nexoraShine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <!-- Left vertical line of N with sharp cut at top -->
+  <path
+    d="M 148 190 L 160 205 L 160 305 L 148 305 Z"
+    fill="url(#nexoraGradMain)"
+  />
+
+  <!-- Main ribbon: Top-left diagonal of N cascading down and looping into G's bowl & crossbar -->
+  <path
+    d="M 148 190 
+       L 230 270 
+       C 260 298 292 312 325 292 
+       C 345 280 354 260 354 246
+       L 354 244
+       L 285 244
+       L 285 254
+       L 342 254
+       C 340 266 332 278 318 284
+       C 292 296 264 282 238 258
+       L 172 190
+       Z"
+    fill="url(#nexoraGradMain)"
+  />
+
+  <!-- Top crescent arch of G with sharp tail -->
+  <path
+    d="M 235 252
+       C 246 220 275 192 322 192
+       C 342 192 355 198 365 208
+       L 357 215
+       C 348 206 338 202 322 202
+       C 285 202 258 226 246 254
+       Z"
+    fill="url(#nexoraGradArc)"
+  />
+
+  <!-- Subtle spine shine on the dynamic loop for high-fidelity metallic sheen -->
+  <path
+    d="M 160 202 
+       L 234 265 
+       C 262 288 290 300 320 286"
+    stroke="url(#nexoraShine)"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    opacity="0.55"
+  />
+</svg>
